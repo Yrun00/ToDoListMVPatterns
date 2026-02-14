@@ -10,12 +10,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import com.github.todolistmvpatterns.ToDoListView
 import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class MVPMainActivity : ComponentActivity(), MVPView {
 
-    @Inject
+    //    @Inject
     lateinit var presenter: Presenter
     private var uiState by mutableStateOf(
         MVPUiState(
