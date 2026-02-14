@@ -14,7 +14,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class MVPMainActivity : ComponentActivity(), MVPView {
 
-    //    @Inject
+    @Inject
     lateinit var presenter: Presenter
     private var uiState by mutableStateOf(
         MVPUiState(
