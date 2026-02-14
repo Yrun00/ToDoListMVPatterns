@@ -1,6 +1,5 @@
 package com.github.todolistmvpatterns
 
-import android.app.Activity
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
@@ -9,17 +8,11 @@ import com.github.todolistmvpatterns.data.Repository
 import com.github.todolistmvpatterns.data.RepositoryImpl
 import com.github.todolistmvpatterns.data.Task
 import com.github.todolistmvpatterns.data.TaskDao
-import com.github.todolistmvpatterns.mvc.Controller
-import com.github.todolistmvpatterns.mvc.MVCView
-import com.github.todolistmvpatterns.mvp.Presenter
-import com.github.todolistmvpatterns.mvp.PresenterImpl
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.components.ActivityComponent
 import dagger.hilt.android.qualifiers.ApplicationContext
-import dagger.hilt.android.scopes.ActivityScoped
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
@@ -36,7 +29,6 @@ object DatabaseModule {
     @Singleton
     fun provideDb(@ApplicationContext context: Context): AppDatabase =
         Room.databaseBuilder(context, AppDatabase::class.java, "todo.db")
-            .allowMainThreadQueries()
             .build()
 
     @Provides
@@ -63,12 +55,12 @@ abstract class RepositoryModule {
 //        repository: Repository,
 //    ): Controller = Controller(view = activity as MVCView, repository = repository)
 //}
-
-@Module
-@InstallIn(SingletonComponent::class)
-abstract class PresenterModule {
-
-    @Binds
-    @Singleton
-    abstract fun bindPresenter(impl: PresenterImpl): Presenter
-}
+//
+//@Module
+//@InstallIn(SingletonComponent::class)
+//abstract class PresenterModule {
+//
+//    @Binds
+//    @Singleton
+//    abstract fun bindPresenter(impl: PresenterImpl): Presenter
+//}
