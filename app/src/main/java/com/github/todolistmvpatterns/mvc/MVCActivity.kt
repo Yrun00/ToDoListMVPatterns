@@ -15,7 +15,7 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class MVCMainActivity : ComponentActivity(), MVCView {
 
-    @Inject
+//    @Inject
     lateinit var controller: Controller
     private var uiState by mutableStateOf(
         MVCUiState(

@@ -52,17 +52,17 @@ abstract class RepositoryModule {
     abstract fun bindRepository(impl: RepositoryImpl): Repository
 }
 
-@Module
-@InstallIn(ActivityComponent::class)
-object MvcModule {
-
-    @Provides
-    @ActivityScoped
-    fun provideController(
-        activity: Activity,
-        repository: Repository,
-    ): Controller = Controller(view = activity as MVCView, repository = repository)
-}
+//@Module
+//@InstallIn(ActivityComponent::class)
+//object MvcModule {
+//
+//    @Provides
+//    @ActivityScoped
+//    fun provideController(
+//        activity: Activity,
+//        repository: Repository,
+//    ): Controller = Controller(view = activity as MVCView, repository = repository)
+//}
 
 @Module
 @InstallIn(SingletonComponent::class)
