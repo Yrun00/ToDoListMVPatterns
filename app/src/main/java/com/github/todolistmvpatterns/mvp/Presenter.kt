@@ -6,7 +6,7 @@ interface Presenter {
 
     fun detach();
     fun onInputChanged(text: String)
-    fun start():Unit?
+    fun start():Unit
     fun onAddTaskClicked()
     fun onToggleClicked(id: Long)
     fun onDeleteTaskClicked(id: Long)

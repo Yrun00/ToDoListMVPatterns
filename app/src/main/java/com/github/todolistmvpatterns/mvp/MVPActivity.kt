@@ -31,10 +31,6 @@ class MVPMainActivity : ComponentActivity(), MVPView {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        presenter.attach(this)
-
-        presenter.start()
-
         enableEdgeToEdge()
         setContent {
             ToDoListView(
@@ -53,6 +49,12 @@ class MVPMainActivity : ComponentActivity(), MVPView {
     override fun onPause() {
         super.onPause()
         presenter.detach()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        presenter.attach(this)
+        presenter.start()
     }
 }
 

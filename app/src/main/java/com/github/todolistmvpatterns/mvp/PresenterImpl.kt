@@ -6,16 +6,19 @@ import javax.inject.Inject
 
 class PresenterImpl @Inject constructor(
     private val repository: Repository,
-): Presenter {
+) : Presenter {
 
-    private  var view: MVPView? = null
+    private var view: MVPView? = null
     private var state: MVPUiState = MVPUiState(
         inputedText = "",
         tasks = readTasks(),
         createButtonEnabled = false,
     )
 
-    override fun start(): Unit? = view?.render(state)
+    override fun start(): Unit {
+        view?.render(state)
+    }
+
     fun readTasks(): List<Task> {
         return repository.readTasks()
     }
@@ -47,10 +50,10 @@ class PresenterImpl @Inject constructor(
     }
 
     override fun attach(view: MVPView) {
-        this.view=view
+        this.view = view
     }
 
     override fun detach() {
-        this.view=null
+        this.view = null
     }
 }
