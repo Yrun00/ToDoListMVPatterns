@@ -1,12 +1,14 @@
 package com.github.todolistmvpatterns.data
 
+import kotlinx.coroutines.flow.Flow
+
 interface Repository {
 
-    fun readTasks(): List<Task>
+    fun observeTasks(): Flow<List<Task>>
 
-    fun addTask(taskTitle: String)
+    suspend fun addTask(taskTitle: String)
 
-    fun deleteTask(taskId:Long)
+    suspend fun deleteTask(taskId: Long)
 
-    fun taskStateChanged(taskId:Long)
+    suspend fun taskStateChanged(taskId: Long)
 }
