@@ -29,7 +29,7 @@ fun ToDoListView(
     tasks: List<Task>,
     onInputChange: (String) -> Unit,
     createButtonEnabled: Boolean,
-    onAddTask: (String) -> Unit,
+    onAddTask: () -> Unit,
     onToggle: (taskId: Long) -> Unit,
     onDeleteTask: (taskId: Long) -> Unit,
     modifier: Modifier = Modifier,
@@ -52,7 +52,7 @@ fun ToDoListView(
             )
             Spacer(Modifier.width(12.dp))
             Button(
-                onClick = { onAddTask(inputText) },
+                onClick = { onAddTask() },
                 enabled = createButtonEnabled,
             ) {
                 Text("Создать")
