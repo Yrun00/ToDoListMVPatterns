@@ -1,4 +1,4 @@
-package com.github.todolistmvpatterns.mvvm_state
+package com.github.todolistmvpatterns.mvi
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -12,9 +12,9 @@ import com.github.todolistmvpatterns.ToDoListView
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class MVVMMainActivity : ComponentActivity() {
+class MVIMainActivity : ComponentActivity() {
 
-    private val viewModel: ToDoListViewModelWithState by viewModels()
+    private val viewModel: ToDoListMVIViewModel by viewModels()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -26,10 +26,10 @@ class MVVMMainActivity : ComponentActivity() {
                 inputText = state.inputedText,
                 tasks = state.tasks,
                 createButtonEnabled = state.createButtonEnabled,
-                onInputChange = { text -> viewModel.onInputChanged(text) },
-                onAddTask = { viewModel.onAddClicked() },
-                onToggle = { id -> viewModel.onToggle(id) },
-                onDeleteTask = { id -> viewModel.onDelete(id) },
+                onInputChange = { text -> viewModel.dispatch(Intent.InputChanged(text)) },
+                onAddTask = { viewModel.dispatch(Intent.AddClicked) },
+                onToggle = { id -> viewModel.dispatch(Intent.ToggleClicked(id)) },
+                onDeleteTask = { id -> viewModel.dispatch(Intent.DeleteClicked(id)) },
                 modifier = Modifier,
             )
         }
