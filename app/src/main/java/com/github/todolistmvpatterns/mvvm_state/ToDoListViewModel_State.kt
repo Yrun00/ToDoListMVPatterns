@@ -13,7 +13,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class ToDoListViewModelState @Inject constructor(
+class ToDoListViewModel_State @Inject constructor(
     private val repository: Repository,
 ) : ViewModel() {
 

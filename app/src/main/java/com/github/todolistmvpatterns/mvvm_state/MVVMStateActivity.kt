@@ -14,7 +14,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class MVVMMainActivity : ComponentActivity() {
 
-    private val viewModel: ToDoListViewModelState by viewModels()
+    private val viewModel: ToDoListViewModel_State by viewModels()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
