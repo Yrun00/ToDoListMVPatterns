@@ -11,6 +11,8 @@ import com.github.todolistmvpatterns.data.Task
 import com.github.todolistmvpatterns.data.TaskDao
 import com.github.todolistmvpatterns.mvc.Controller
 import com.github.todolistmvpatterns.mvc.MVCView
+import com.github.todolistmvpatterns.mvp.Presenter
+import com.github.todolistmvpatterns.mvp.PresenterImpl
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -36,7 +38,6 @@ object DatabaseModule {
         Room.databaseBuilder(context, AppDatabase::class.java, "todo.db")
             .allowMainThreadQueries()
             .build()
-    // можно allowMainThreadQueries() только для учебы
 
     @Provides
     fun provideTaskDao(db: AppDatabase): TaskDao = db.taskDao()
@@ -61,4 +62,13 @@ object MvcModule {
         activity: Activity,
         repository: Repository,
     ): Controller = Controller(view = activity as MVCView, repository = repository)
+}
+
+@Module
+@InstallIn(SingletonComponent::class)
+abstract class PresenterModule {
+
+    @Binds
+    @Singleton
+    abstract fun bindPresenter(impl: PresenterImpl): Presenter
 }
