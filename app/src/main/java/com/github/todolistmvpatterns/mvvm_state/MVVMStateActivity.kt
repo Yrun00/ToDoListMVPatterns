@@ -12,9 +12,9 @@ import com.github.todolistmvpatterns.ToDoListView
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class MVVMMainActivity : ComponentActivity() {
+class MVVMStateMainActivity : ComponentActivity() {
 
-    private val viewModel: ToDoListViewModel_State by viewModels()
+    private val viewModel: ToDoListViewModelWithState by viewModels()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
