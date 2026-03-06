@@ -22,14 +22,16 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.github.todolistmvpatterns.data.Task
-import com.github.todolistmvpatterns.mvi.TodoListUiAction
 
 @Composable
 fun ToDoListView(
     inputText: String,
     tasks: List<Task>,
+    onInputChange: (String) -> Unit,
     createButtonEnabled: Boolean,
-    onAction: (TodoListUiAction) -> Unit,
+    onAddTask: () -> Unit,
+    onToggle: (taskId: Long) -> Unit,
+    onDeleteTask: (taskId: Long) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -44,13 +46,13 @@ fun ToDoListView(
             TextField(
                 modifier = Modifier.weight(1f),
                 value = inputText,
-                onValueChange = { onAction(TodoListUiAction.InputChanged(it)) },
+                onValueChange = onInputChange,
                 singleLine = true,
                 placeholder = { Text("Новая таска") },
             )
             Spacer(Modifier.width(12.dp))
             Button(
-                onClick = { onAction(TodoListUiAction.AddClicked) },
+                onClick = { onAddTask() },
                 enabled = createButtonEnabled,
             ) {
                 Text("Создать")
@@ -74,7 +76,7 @@ fun ToDoListView(
                     Checkbox(
                         checked = task.done,
                         onCheckedChange = { checked ->
-                            onAction(TodoListUiAction.ToggleClicked(task.id))
+                            onToggle(task.id)
                         },
                     )
                     Spacer(Modifier.width(8.dp))
@@ -83,7 +85,7 @@ fun ToDoListView(
                         modifier = Modifier.weight(1f),
                         textDecoration = if (task.done) TextDecoration.LineThrough else null,
                     )
-                    Button(onClick = { onAction(TodoListUiAction.DeleteClicked(task.id)) }) {
+                    Button(onClick = { onDeleteTask(task.id) }) {
                         Text(
                             "Удалить",
                         )
@@ -109,7 +111,10 @@ private fun PreviewToDoList() {
             Task(3, "Пробежка", true),
             Task(4, "Пробежка", true),
         ),
-        onAction = {},
+        onInputChange = {},
+        onAddTask = {},
+        onToggle = {},
+        onDeleteTask = {},
         createButtonEnabled = false,
     )
 }

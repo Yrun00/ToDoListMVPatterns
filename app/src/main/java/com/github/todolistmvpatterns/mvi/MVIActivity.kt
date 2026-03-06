@@ -26,11 +26,13 @@ class MVIMainActivity : ComponentActivity() {
                 inputText = state.inputedText,
                 tasks = state.tasks,
                 createButtonEnabled = state.createButtonEnabled,
-                onAction = viewModel::dispatch,
+                onInputChange = { text -> viewModel.dispatch(Intent.InputChanged(text)) },
+                onAddTask = { viewModel.dispatch(Intent.AddClicked) },
+                onToggle = { id -> viewModel.dispatch(Intent.ToggleClicked(id)) },
+                onDeleteTask = { id -> viewModel.dispatch(Intent.DeleteClicked(id)) },
                 modifier = Modifier,
             )
         }
-
     }
 
     override fun onPause() {
