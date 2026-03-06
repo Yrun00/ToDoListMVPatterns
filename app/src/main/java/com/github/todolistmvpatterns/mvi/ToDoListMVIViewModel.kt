@@ -3,6 +3,9 @@ package com.github.todolistmvpatterns.mvi
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.github.todolistmvpatterns.data.Repository
+import com.github.todolistmvpatterns.mvi.TodoListReducer.inputChanged
+import com.github.todolistmvpatterns.mvi.TodoListReducer.taskAdded
+import com.github.todolistmvpatterns.mvi.TodoListReducer.tasksLoaded
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -19,69 +22,36 @@ class ToDoListMVIViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(
-        MVIUiState(
-            inputedText = "",
-            tasks = emptyList(),
-            createButtonEnabled = false,
-        ),
+        MVIUiState(inputedText = "", tasks = emptyList(), createButtonEnabled = false),
     )
     val uiState: StateFlow<MVIUiState> = _state.asStateFlow()
 
     init {
         repository.observeTasks()
-            .onEach { tasks -> dispatch(Intent.TasksChanged(tasks)) }
+            .onEach { tasks -> _state.update { it.tasksLoaded(tasks) } }
             .launchIn(viewModelScope)
     }
 
-    fun dispatch(intent: Intent) {
-        when (intent) {
-            is Intent.InputChanged -> {
-                reduce(intent)
+    fun dispatch(action: TodoListUiAction) {
+        when (action) {
+            is TodoListUiAction.InputChanged -> {
+                _state.update { it.inputChanged(action.text) }
+
             }
 
-            Intent.AddClicked -> {
+            TodoListUiAction.AddClicked -> {
                 val title = _state.value.inputedText
                 if (title.isEmpty()) return
-
-                _state.update { it.copy(inputedText = "", createButtonEnabled = false) }
-                viewModelScope.launch {
-                    repository.addTask(title)
-                }
+                _state.update { it.taskAdded() }
+                viewModelScope.launch { repository.addTask(title) }
             }
 
-            is Intent.ToggleClicked -> {
-                viewModelScope.launch {
-                    repository.taskStateChanged(intent.id)
-                }
+            is TodoListUiAction.ToggleClicked -> {
+                viewModelScope.launch { repository.taskStateChanged(action.id) }
             }
 
-            is Intent.DeleteClicked -> {
-                viewModelScope.launch {
-                    repository.deleteTask(intent.id)
-                }
-            }
-
-            is Intent.TasksChanged -> {
-                reduce(intent)
-            }
-        }
-    }
-
-    private fun reduce(intent: Intent) {
-        _state.update { old ->
-            when (intent) {
-                is Intent.InputChanged -> {
-                    old.copy(
-                        inputedText = intent.text,
-                        createButtonEnabled = intent.text.isNotBlank(),
-                    )
-                }
-
-                is Intent.TasksChanged -> {
-                    old.copy(tasks = intent.tasks)
-                }
-
-                else -> old
+            is TodoListUiAction.DeleteClicked -> {
+                viewModelScope.launch { repository.deleteTask(action.id) }
             }
         }
     }
